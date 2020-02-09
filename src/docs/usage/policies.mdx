@@ -1,0 +1,102 @@
+---
+title: "Data Access Policies"
+description: "A guide for defining data access policies"
+---
+
+Policies consist of a definition of sensitive data and a set of rules specifying how the data can be accessed, expressed in YAML format. Here is an
+example policy along with descriptions of each field.
+
+```yaml
+sensitiveAttrs:
+  - card_number
+  - credit_limit
+  - card_family
+locations:
+  - repo: invoices
+    schema: finance
+    table: cards
+rules:
+  - identities:
+      - scientist
+    reads:
+      allow: true
+      attributes: ["*"]
+      rows: 10
+    updates:
+      allow: true
+      attributes:
+        - credit_limit
+      rows: 1
+    deletes:
+      allow: true
+      rows: 1
+defaultRule:
+  reads:
+    allow: true
+    attributes:
+    rows: 1
+  updates:
+    allow: false
+  deletes:
+    allow: false
+```
+
+A policy can be broken into two sections: _data specification_, comprising fields `sensitiveAttrs` and `locations`; and _data access rules_, comprising fields `rules` and `defaultRule`.
+
+## Data Specification
+
+Users specify sensitive data to be managed by the policy through two fields:
+
+- `sensitiveAttrs` is the dataset managed by the policy
+- `locations` is the set of locations where the dataset exists each location is defined by the repository, schema, and table containing the dataset entered in fields `repo`, `schema`, and `table`, respectively.
+
+In the following example, we specify that attributes `card_number`, `card_family`, and `credit_limit` are sensitive and exist in table cards under the schema playground in the clinics repository as well as in the `credit` repository.
+
+```yaml
+sensitiveAttrs: [card_number, card_family, credit_limit]
+locations:
+  - repo: credit
+    schema: playground
+    table: cards
+  - repo: clinics
+    schema: playground
+    table: cards
+```
+
+## Data Access Rules
+
+Users can manage how sensitive data can be accessed by specifying data access rules.
+
+A data access rule comprises these fields:
+
+- `reads`, `updates`, and `deletes` respectively specify restrictions on reads, updates, and deletes of sensitive data. For each action, a user can specify these fields:
+  - `allow` is `true` when the action is allowed, and `false` otherwise
+  - `attributes` is the set of sensitive attributes for which the action is allowed
+    - the value `["*"]` is used to specify that all attributes can be accessed
+    - allowed attributes are only specified for `read` and `update` actions, because attributes cannot be selectively deleted without deleting the row
+  - `rows` specifies the maximum numbers of rows that can be accessed or affected by the action
+    - the value `-1` is used to specify that there is no limit on the amount of rows that can be accessed identities is the set of entities affected by the rule
+  - `identities` is the set of entities affected by the rule
+    - this field is not specified for the default rule, which applies to accesses that do not match any of the identities specified by rules in the `rules` field
+
+For example, the following rule dictates that the identity `scientist` can read up to 10 rows of any attributes, update a single row of the attribute `credit_limit`, and is prohibited from deleting any sensitive data managed by the policy containing this rule.
+
+```yaml
+identities:
+      - scientist
+    reads:
+      allow: true
+      attributes: ["*"]
+      rows: 10
+    updates:
+      allow: true
+      attributes:
+        - credit_limit
+      rows: 1
+    deletes:
+      allow: true
+      rows: 1
+```
+
+A single policy can have several such rules specified in the field rules, as well as a rule that applies to any identities that aren’t covered by
+those rules specified in the field `defaultRule`.
