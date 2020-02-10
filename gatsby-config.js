@@ -9,7 +9,7 @@ module.exports = {
     siteImage: `/banner.png`,
     siteLanguage: `en`,
     themeColor: `#7159c1`,
-    footer: `Made in Redwood City, CA`
+    footer: `Made with 💙& ☕ by Cyral`
   },
   plugins: [
     {
