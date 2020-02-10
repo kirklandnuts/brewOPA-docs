@@ -1,7 +1,7 @@
-import React from 'react';
-import { Global, css } from '@emotion/core';
-import { useTheme } from 'emotion-theming';
-import { lighten } from 'polished';
+import React from "react";
+import { Global, css } from "@emotion/core";
+import { useTheme } from "emotion-theming";
+import { lighten } from "polished";
 
 export default function GlobalStyle() {
   const theme = useTheme();
@@ -9,7 +9,7 @@ export default function GlobalStyle() {
   return (
     <Global
       styles={css`
-        @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+        @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 
         *,
         *::after,
@@ -20,12 +20,12 @@ export default function GlobalStyle() {
         }
 
         *::selection {
-          background: ${lighten('0.35', '#737380')}!important;
+          background: ${lighten("0.35", "#737380")}!important;
         }
 
         body {
           font-size: 16px;
-          font-family: 'Roboto', sans-serif;
+          font-family: "Roboto", sans-serif;
           background-color: ${theme.colors.background};
           text-rendering: optimizelegibility;
         }
@@ -132,13 +132,13 @@ export default function GlobalStyle() {
           }
         }
 
-        pre[class*='language-']::before {
+        pre[class*="language-"]::before {
           background: #d9d7e0;
           border-radius: 0 0 4px 4px;
           color: #232129;
           font-size: 12px;
           font-family: SFMono-Regular, Menlo, Monaco, Consolas,
-            'Liberation Mono', 'Courier New', monospace;
+            "Liberation Mono", "Courier New", monospace;
           letter-spacing: 0.075em;
           line-height: 1;
           padding: 0.25rem 0.5rem;
@@ -149,91 +149,96 @@ export default function GlobalStyle() {
           top: 0;
         }
 
-        pre[class*='language-'] code {
+        pre[class*="language-"] code {
           font-family: SFMono-Regular, Menlo, Monaco, Consolas,
-            'Liberation Mono', 'Courier New', monospace;
+            "Liberation Mono", "Courier New", monospace;
           font-variant: no-common-ligatures no-discretionary-ligatures
             no-historical-ligatures no-contextual;
         }
 
-        pre[class~='language-javascript']::before {
-          content: 'js';
+        pre[class~="language-javascript"]::before {
+          content: "js";
           background: #f7df1e;
         }
 
-        pre[class~='language-js']::before {
-          content: 'js';
+        pre[class~="language-js"]::before {
+          content: "js";
           background: #f7df1e;
         }
 
-        pre[class~='language-jsx']::before {
-          content: 'jsx';
+        pre[class~="language-jsx"]::before {
+          content: "jsx";
           background: #61dafb;
         }
 
-        pre[class~='language-graphql']::before {
-          content: 'GraphQL';
+        pre[class~="language-graphql"]::before {
+          content: "GraphQL";
           background: #e10098;
           color: #fff;
         }
 
-        pre[class~='language-html']::before {
-          content: 'html';
+        pre[class~="language-html"]::before {
+          content: "html";
           background: #005a9c;
           color: #fff;
         }
 
-        pre[class~='language-css']::before {
-          content: 'css';
+        pre[class~="language-css"]::before {
+          content: "css";
           background: #ff9800;
           color: #fff;
         }
 
-        pre[class~='language-mdx']::before {
-          content: 'mdx';
+        pre[class~="language-mdx"]::before {
+          content: "mdx";
           background: #f9ac00;
           color: #fff;
         }
 
-        pre[class~='language-shell']::before {
-          content: 'shell';
+        pre[class~="language-shell"]::before {
+          content: "shell";
         }
 
-        pre[class~='language-sh']::before {
-          content: 'sh';
+        pre[class~="language-sh"]::before {
+          content: "sh";
         }
 
-        pre[class~='language-bash']::before {
-          content: 'bash';
+        pre[class~="language-bash"]::before {
+          content: "bash";
         }
 
-        pre[class~='language-yaml']::before {
-          content: 'yaml';
+        pre[class~="language-yaml"]::before {
+          content: "yaml";
           background: #ffa8df;
         }
 
-        pre[class~='language-markdown']::before {
-          content: 'md';
+        pre[class~="language-go"]::before {
+          content: "go";
+          background: #03abd7;
         }
 
-        pre[class~='language-json']::before,
-        pre[class~='language-json5']::before {
-          content: 'json';
+        pre[class~="language-markdown"]::before {
+          content: "md";
+        }
+
+        pre[class~="language-json"]::before,
+        pre[class~="language-json5"]::before {
+          content: "json";
           background: linen;
         }
 
-        pre[class~='language-diff']::before {
-          content: 'diff';
+        pre[class~="language-diff"]::before {
+          content: "diff";
           background: #e6ffed;
         }
 
-        pre[class~='language-text']::before {
-          content: 'text';
+        pre[class~="language-text"]::before {
+          content: "text";
           background: #fff;
         }
 
-        pre[class~='language-flow']::before {
-          content: 'flow';
+        pre[class~="language-flow"]::before {
+          content: "flow";
           background: #e8bd36;
         }
       `}
