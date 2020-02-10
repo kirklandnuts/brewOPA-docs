@@ -9,7 +9,7 @@
     - label: "Defining policies"
       link: "/usage/policies"
     - label: "Workflow as OPA REST APIs"
-      link: "/usage/opa_rest"
+      link: "/usage/opa_rest_api"
 - label: ""
 - label: ""
 - label: Github

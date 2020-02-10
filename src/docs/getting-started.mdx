@@ -1,7 +1,80 @@
 ---
-title: 'Getting started'
+title: "Getting started"
 ---
+
+This guide walks through the brewOPA workflow demonstrated in the [example code](https://github.com/cyralinc/brewOPA/blob/master/example/main.go) included in the repository. This workflow is also documented in the form of OPA REST APIs [here](/usage/opa_rest_api).
 
 ```go
 import "github.com/cyralinc/brewOPA"
+```
+
+Instantiate the validator with the brewOPA rego module.
+
+```go
+validator, err := brewOPA.NewValidatorFromRego("../rego/brewOPA.rego")
+if err != nil {
+        fmt.Print("failed to create validator: %v", err)
+}
+```
+
+Configure the validator with one or more data access policies.
+
+```go
+data, err := ioutil.ReadFile("../rego/sample_data/policy.yaml")
+if err != nil {
+        fmt.Printf("failed to decode yaml: %v", err)
+        return
+}
+
+policy, err := brewOPA.AccessPolicyFromYAML(data)
+if err != nil {
+        fmt.Print("failed to create access policy from YAML: %v", err)
+        return
+}
+
+err = validator.AddPolicy("myPolicy", policy)
+if err != nil {
+        fmt.Printf("failed to add policy")
+        return
+}
+```
+
+Create and validate accesses to data.
+
+```go
+access := brewOPA.NewAccess("invoices", "bob", 10, brewOPA.AccessTypeRead,
+        brewOPA.TablesReferenced([]string{"finance.cards"}),
+        brewOPA.ColumnsReferenced(map[string][]string{
+                "finance.cards": []string{"card_number", "credit_limit"},
+        }),
+)
+
+result, err := validator.Validate(context.Background(), access)
+if err != nil {
+        fmt.Printf("failed to validate access: %v", err)
+        return
+}
+```
+
+The access failed validation because it accesses the sensitive attribute `card_number` while the policy specifies that bob can only read attributes `credit_limit` and `card_family`.
+
+```json
+{
+  "pass": false,
+  "tables": {
+    "finance.cards": {
+      "policyDefined": true,
+      "rulesApplied": {
+        "reads": {
+          "violated": true,
+          "contextedRule": {
+            "allow": true,
+            "rows": 10,
+            "attributes": ["credit_limit", "card_family"]
+          }
+        }
+      }
+    }
+  }
+}
 ```
